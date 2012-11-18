@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>jQuery Mobile: Demos and Documentation</title>
+	<link rel="stylesheet"  href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+	<link rel="stylesheet" href="jqm-docs.css" />
+	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+	<script src="jqm-docs.js"></script>
+	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).bind('pageinit', function() {
+			$('#askForHosting').submit(function() {
+				// Get the vars
+				var name = $("input#askName").val();
+				var tel = $("input#askTel").val();
+
+				// POST the data to server
+				$.ajax({
+				  type: "POST",
+				  url: "/hosting/people",
+				  data: { name: name, tel: tel }
+				}).done(function( msg ) {
+				  alert( "Data Saved: " + msg );
+				  // Hide loading
+				  $.mobile.hidePageLoadingMsg();
+				}).fail(function(jqXHR, textStatus) {
+				  alert( "Request failed: " + textStatus );
+				  // Hide loading
+				  $.mobile.hidePageLoadingMsg();
+				});
+
+				// Show loading
+				$.mobile.showPageLoadingMsg();	
+
+				// Close the popup
+				$( "#popupAskHosting" ).popup( "close" );
+
+				// Don't submit the form, we already submited it
+				return false;
+			});
+		});
+
+
+
+
+
+	</script>
+	
+</head>
+<body>
+<div data-role="page" class="type-home">
+
+
+
+
+
+
+	<div data-role="popup" id="popupAskHosting" data-overlay-theme="a" data-theme="c" style="max-width:400px;" class="ui-corner-all">
+		<form id="askForHosting">
+			<div style="padding:10px 20px;">
+			  <h3>Please provide a name and your telephone number</h3>
+	          <label for="un" class="ui-hidden-accessible">Name:</label>
+	          <input type="text" name="name" id="askName" value="" placeholder="your name" data-theme="a" />
+
+	          <label for="pw" class="ui-hidden-accessible">Phone number:</label>
+	          <input type="tel" name="tel" id="askTel" value="" placeholder="your phone number" data-theme="a" />
+
+			  <button type="submit" data-theme="b">Find a place</button>
+			  <button type="cancel" data-theme="c">Cancel</button>
+			</div>
+		</form>
+	</div>
+	
+
+
+
+	<div data-role="content">
+
+
+		<div class="content-secondary">
+
+			<div id="jqm-homeheader">
+				<h1 id="jqm-logo"><img src="images/logo.png" alt="jQuery Mobile Framework" /></h1>
+				<p>Helping people in case of emergencies.</p>
+			</div>
+
+
+			<p class="intro"><strong>Welcome.</strong> In case of emergency remember to stay calm. If you need or can provide help please select the appropriate action.</p>
+
+			<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="f">
+				<li data-role="list-divider">In case of emergency</li>
+
+				<li><a href="#popupAskHosting" data-rel="popup">I need a place to stay</a></li>
+				<!-- <li><a href="docs/about/intro.html">I need a place to stay</a></li> -->
+				<li><a href="docs/about/getting-started.html">I can host</a></li>
+			</ul>
+
+		</div><!--/content-primary-->
+
+		<div id	="content-primary">
+
+		</div>
+
+
+
+	</div>
+
+	<div data-role="footer" class="footer-docs" data-theme="c">
+			<p>&copy; ogeo team. Codemotion 2012</p>
+	</div>
+
+</div>
+</body>
+</html>
