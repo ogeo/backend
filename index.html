@@ -9,9 +9,11 @@
 	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 	<script src="jqm-docs.js"></script>
 	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAIBdEo66QYkdkD0Pgbob70Jxelq2scm88&sensor=false"> </script>
 
 	<script type="text/javascript">
 		$(document).bind('pageinit', function() {
+			initiate_geolocation();
 			$('#askForHosting').submit(function() {
 				// Get the vars
 				var name = $("input#askName").val();
@@ -44,6 +46,25 @@
 		});
 
 
+
+
+		function initiate_geolocation() {  
+            navigator.geolocation.getCurrentPosition(initializeMap);  
+        }  
+
+
+		function initializeMap(position) {
+            console.log('Lat: ' + position.coords.latitude + ' ' +  
+                  'Lon: ' + position.coords.longitude);
+
+			var mapProp = {
+			  center:new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+			  zoom:5,
+			  mapTypeId:google.maps.MapTypeId.ROADMAP
+			  };
+			var map=new google.maps.Map(document.getElementById("content-primary")
+			  ,mapProp);
+		}
 
 
 
@@ -100,9 +121,7 @@
 
 		</div><!--/content-primary-->
 
-		<div id	="content-primary">
-
-		</div>
+		<div id="content-primary" style="width:500px;height:380px;"></div>
 
 
 
