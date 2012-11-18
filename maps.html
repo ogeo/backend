@@ -56,7 +56,7 @@
 				return;
 			}
 
-			$.getJSON( 'markers.json', function(data) { 
+			$.getJSON( '/rest/hosting/people.json', function(data) { 
 				$.each( data, function(i, m) {
 					gm.gmap('addMarker', { position: new google.maps.LatLng(m.latitude, m.longitude), bounds:true } )
 						.click(function() {
