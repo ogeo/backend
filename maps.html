@@ -14,12 +14,11 @@
 
 
 	<script type="text/javascript">
+		var gm = null;
+
 		$(document).bind('pageinit', function() {
 			initiate_geolocation();
 		});
-
-
-
 
 		function initiate_geolocation() {  
             navigator.geolocation.getCurrentPosition(initializeMap);  
@@ -34,6 +33,7 @@
             
             var myMarker = new google.maps.Marker({
 			   position:myCenter,
+			   bounds: true,
 			   animation:google.maps.Animation.BOUNCE
 			});
 
@@ -43,11 +43,34 @@
 			  mapTypeId:google.maps.MapTypeId.ROADMAP
 			};
 
-			$('#content-primary').gmap(mapProp).gmap('addMarker', myMarker);
+			gm = $('#content-primary');
+			gm.gmap(mapProp);
+			gm.gmap('addMarker', myMarker);
+
+			addMarkers();
 		}
 
+		function addMarkers() {
+			// Check if map loaded
+			if (gm === null) {
+				return;
+			}
 
+			$.getJSON( 'markers.json', function(data) { 
+				$.each( data, function(i, m) {
+					gm.gmap('addMarker', { position: new google.maps.LatLng(m.latitude, m.longitude), bounds:true } )
+						.click(function() {
+							gm.gmap('openInfoWindow', { 'content': getPersonInfoHtml(m)}, this);
+						});
+				});
+			});
+		}
+
+		function getPersonInfoHtml(person) {
+			return '<h3>'+person.name+'</h3>Phone: <a href="tel:'+person.cellNumber+'">'+person.cellNumber+'</a>';
+		}
 	</script>
+
 
 
 
